@@ -2,7 +2,7 @@
   "name": "napi-spellchecker",
   "version": "0.0.0",
   "description": "Spell Checker built against ABI-stable Node.js API",
-  "main": "spellchecker.js",
+  "main": "./lib/spellchecker.js",
   "private": true,
   "gypfile": true,
   "dependencies": {
