@@ -15,7 +15,7 @@ class Spellchecker {
   ~Spellchecker();
 
   static napi_value New(napi_env env, napi_callback_info info);
-  static std::string ParseWord(napi_env env, napi_callback_info info);
+  static std::string ParseWord(napi_env env, napi_value str);
   static Spellchecker *Unwrap(napi_env env, napi_callback_info info);
   static napi_value SetDictionary(napi_env env, napi_callback_info info);
   static napi_value GetAvailableDictionaries(napi_env env, napi_callback_info info);

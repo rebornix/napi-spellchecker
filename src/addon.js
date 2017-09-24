@@ -9,3 +9,4 @@ var misRanges = obj.checkSpelling("helloo wrold");
 for (var i = 0; i < misRanges.length; i++) {
     console.log(`start: ${misRanges[i].start}, end: ${misRanges[i].end}`);
 }
+console.log( obj.getAvailableDictionaries().join(', ') );
