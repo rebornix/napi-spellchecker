@@ -72,8 +72,8 @@ Spellchecker *Spellchecker::Unwrap(napi_env env, napi_callback_info info)
     status = napi_get_cb_info(env, info, nullptr, nullptr, &jsthis, nullptr);
     assert(status == napi_ok);
 
-    Spellchecker* obj;
-    status = napi_unwrap(env, jsthis, reinterpret_cast<void**>(&obj));
+    Spellchecker *obj;
+    status = napi_unwrap(env, jsthis, reinterpret_cast<void **>(&obj));
     assert(status == napi_ok);
 
     return obj;
@@ -192,12 +192,59 @@ napi_value Spellchecker::IsMisspelled(napi_env env, napi_callback_info info)
 
 napi_value Spellchecker::CheckSpelling(napi_env env, napi_callback_info info)
 {
+    napi_status status;
+
+    size_t argc = 1;
+    napi_value args[1];
+    napi_value jsthis;
+    status = napi_get_cb_info(env, info, &argc, args, &jsthis, nullptr);
+    assert(status == napi_ok);
+
+    size_t strLength = 1;
+    status = napi_get_value_string_utf8(env, args[0], NULL, 0, &strLength);
+    assert(status == napi_ok);
+    char16_t buf[strLength];
+    size_t result;
+    status = napi_get_value_string_utf16(env, args[0], buf, strLength + 1, &result);
+    assert(status == napi_ok);
+
+    Spellchecker *obj = Spellchecker::Unwrap(env, info);
+
+    std::vector<MisspelledRange> misspelled_ranges = obj->spellcheckerImpl_->CheckSpelling(reinterpret_cast<const uint16_t*>(buf), strLength);
+    napi_value arr;
+    status = napi_create_array(env, &arr);
+
+    std::vector<MisspelledRange>::const_iterator iter = misspelled_ranges.begin();
+    for (; iter != misspelled_ranges.end(); ++iter)
+    {
+        size_t index = iter - misspelled_ranges.begin();
+        uint32_t start = iter->start, end = iter->end;
+
+        napi_value misspelled_range;
+        status = napi_create_object(env, &misspelled_range);
+
+        napi_value startValue, endValue;
+        status = napi_create_int32(env, start, &startValue);
+        assert(status == napi_ok);
+        status = napi_create_int32(env, end, &endValue);
+        assert(status == napi_ok);
+
+        napi_property_descriptor descriptors[] = {
+            {"start", nullptr, 0, 0, 0, startValue, napi_default, 0},
+            {"end", nullptr, 0, 0, 0, endValue, napi_default, 0}
+        };
+
+        status = napi_define_properties(env, misspelled_range, sizeof(descriptors) / sizeof(descriptors[0]), descriptors);
+        assert(status == napi_ok);
+        status = napi_set_element(env, arr, index, misspelled_range);
+        assert(status == napi_ok);
+    }
+
+    return arr;
 }
 
 napi_value Spellchecker::Add(napi_env env, napi_callback_info info)
 {
-    napi_status status;
-
     Spellchecker *obj = Spellchecker::Unwrap(env, info);
     std::string word = Spellchecker::ParseWord(env, info);
 
@@ -206,8 +253,6 @@ napi_value Spellchecker::Add(napi_env env, napi_callback_info info)
 
 napi_value Spellchecker::Remove(napi_env env, napi_callback_info info)
 {
-    napi_status status;
-
     Spellchecker *obj = Spellchecker::Unwrap(env, info);
     std::string word = Spellchecker::ParseWord(env, info);
 
