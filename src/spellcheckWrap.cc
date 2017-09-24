@@ -42,6 +42,43 @@ void Spellchecker::Init(napi_env env, napi_value exports)
     assert(status == napi_ok);
 }
 
+std::string Spellchecker::ParseWord(napi_env env, napi_callback_info info)
+{
+    napi_status status;
+
+    size_t argc = 1;
+    napi_value args[1];
+    napi_value jsthis;
+    status = napi_get_cb_info(env, info, &argc, args, &jsthis, nullptr);
+    assert(status == napi_ok);
+
+    size_t strLength = 1;
+    status = napi_get_value_string_utf8(env, args[0], NULL, 0, &strLength);
+    assert(status == napi_ok);
+    char buf[strLength];
+    size_t result;
+    status = napi_get_value_string_utf8(env, args[0], buf, strLength + 1, &result);
+    assert(status == napi_ok);
+
+    std::string word(buf);
+    return word;
+}
+
+Spellchecker *Spellchecker::Unwrap(napi_env env, napi_callback_info info)
+{
+    napi_status status;
+
+    napi_value jsthis;
+    status = napi_get_cb_info(env, info, nullptr, nullptr, &jsthis, nullptr);
+    assert(status == napi_ok);
+
+    Spellchecker* obj;
+    status = napi_unwrap(env, jsthis, reinterpret_cast<void**>(&obj));
+    assert(status == napi_ok);
+
+    return obj;
+}
+
 napi_value Spellchecker::New(napi_env env, napi_callback_info info)
 {
     napi_status status;
@@ -118,24 +155,8 @@ napi_value Spellchecker::GetCorrectionsForMisspelling(napi_env env, napi_callbac
 {
     napi_status status;
 
-    size_t argc = 1;
-    napi_value args[1];
-    napi_value jsthis;
-    status = napi_get_cb_info(env, info, &argc, args, &jsthis, nullptr);
-    assert(status == napi_ok);
-
-    size_t strLength = 1;
-    status = napi_get_value_string_utf8(env, args[0], NULL, 0, &strLength);
-    assert(status == napi_ok);
-    char buf[strLength];
-    size_t result;
-    status = napi_get_value_string_utf8(env, args[0], buf, strLength + 1, &result);
-    assert(status == napi_ok);
-
-    std::string word(buf);
-    Spellchecker *obj;
-    status = napi_unwrap(env, jsthis, reinterpret_cast<void **>(&obj));
-    assert(status == napi_ok);
+    Spellchecker *obj = Spellchecker::Unwrap(env, info);
+    std::string word = Spellchecker::ParseWord(env, info);
 
     std::vector<std::string> corrections =
         obj->spellcheckerImpl_->GetCorrectionsForMisspelling(word);
@@ -158,24 +179,8 @@ napi_value Spellchecker::IsMisspelled(napi_env env, napi_callback_info info)
 {
     napi_status status;
 
-    size_t argc = 1;
-    napi_value args[1];
-    napi_value jsthis;
-    status = napi_get_cb_info(env, info, &argc, args, &jsthis, nullptr);
-    assert(status == napi_ok);
-
-    size_t strLength = 1;
-    status = napi_get_value_string_utf8(env, args[0], NULL, 0, &strLength);
-    assert(status == napi_ok);
-    char buf[strLength];
-    size_t result;
-    status = napi_get_value_string_utf8(env, args[0], buf, strLength + 1, &result);
-    assert(status == napi_ok);
-
-    std::string word(buf);
-    Spellchecker *obj;
-    status = napi_unwrap(env, jsthis, reinterpret_cast<void **>(&obj));
-    assert(status == napi_ok);
+    Spellchecker *obj = Spellchecker::Unwrap(env, info);
+    std::string word = Spellchecker::ParseWord(env, info);
     bool isMisspelledBool = obj->spellcheckerImpl_->IsMisspelled(word);
 
     napi_value isMisspelled;
@@ -191,7 +196,20 @@ napi_value Spellchecker::CheckSpelling(napi_env env, napi_callback_info info)
 
 napi_value Spellchecker::Add(napi_env env, napi_callback_info info)
 {
+    napi_status status;
+
+    Spellchecker *obj = Spellchecker::Unwrap(env, info);
+    std::string word = Spellchecker::ParseWord(env, info);
+
+    obj->spellcheckerImpl_->Add(word);
 }
+
 napi_value Spellchecker::Remove(napi_env env, napi_callback_info info)
 {
+    napi_status status;
+
+    Spellchecker *obj = Spellchecker::Unwrap(env, info);
+    std::string word = Spellchecker::ParseWord(env, info);
+
+    obj->spellcheckerImpl_->Remove(word);
 }
