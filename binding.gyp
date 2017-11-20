@@ -33,7 +33,9 @@
   'targets': [
     {
       'target_name': 'spellchecker',
-      'include_dirs': ["<!@(node -p \"require('node-addon-api').include\")"],
+      "include_dirs": [
+        "<!@(node -p \"require('node-addon-api').include\")"
+      ],
       'dependencies': ["<!(node -p \"require('node-addon-api').gyp\")"],
       'sources': [ "src/main.cc", "src/spellcheckWrap.cc" ],
       'conditions': [
@@ -69,6 +71,7 @@
           },
         }],
       ],
+      'defines': [ 'NAPI_DISABLE_CPP_EXCEPTIONS' ]
     },
   ],
   'conditions': [
