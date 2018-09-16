@@ -18,7 +18,7 @@ void Spellchecker::Destructor(napi_env env, void *nativeObject, void * /*finaliz
         name, 0, func, 0, 0, 0, napi_default, 0 \
     }
 
-void Spellchecker::Init(napi_env env, napi_value exports)
+napi_value Spellchecker::Init(napi_env env, napi_value exports)
 {
     napi_status status;
     napi_property_descriptor properties[] = {
@@ -32,7 +32,7 @@ void Spellchecker::Init(napi_env env, napi_value exports)
 
     napi_value cons;
     status =
-        napi_define_class(env, "Spellchecker", New, nullptr, 7, properties, &cons);
+        napi_define_class(env, "Spellchecker", -1, New, nullptr, 7, properties, &cons);
     assert(status == napi_ok);
 
     status = napi_create_reference(env, cons, 1, &constructor);
@@ -40,6 +40,8 @@ void Spellchecker::Init(napi_env env, napi_value exports)
 
     status = napi_set_named_property(env, exports, "Spellchecker", cons);
     assert(status == napi_ok);
+	
+	return exports;
 }
 
 std::string Spellchecker::ParseWord(napi_env env, napi_value str)
@@ -83,9 +85,10 @@ napi_value Spellchecker::New(napi_env env, napi_callback_info info)
 {
     napi_status status;
 
-    bool is_constructor;
-    status = napi_is_construct_call(env, info, &is_constructor);
-    assert(status == napi_ok);
+    // napi_get_new_target replaced napi_is_construct_call https://github.com/nodejs/node/commit/973c12f631c53a9833e0bcd11f5457ebec5269c4
+    napi_value new_target;
+    status = napi_get_new_target(env, info, &new_target);
+    bool is_constructor = (new_target != nullptr);
 
     if (is_constructor)
     {
