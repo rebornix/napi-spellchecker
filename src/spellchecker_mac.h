@@ -1,3 +1,7 @@
+/*
+ * The file was derived from src/spellchecker_mac.h in https://github.com/atom/node-spellchecker
+ */
+
 #ifndef SRC_SPELLCHECKER_MAC_H_
 #define SRC_SPELLCHECKER_MAC_H_
 

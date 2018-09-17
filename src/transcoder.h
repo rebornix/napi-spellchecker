@@ -1,3 +1,7 @@
+/*
+ * The file was derived from src/transcoder.h in https://github.com/atom/node-spellchecker
+ */
+
 #ifndef SRC_TRANSCODER_H_
 #define SRC_TRANSCODER_H_
 

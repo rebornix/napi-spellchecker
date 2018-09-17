@@ -1,3 +1,7 @@
+/*
+ * The file was derived from src/spellchecker_hunspell.cc in https://github.com/atom/node-spellchecker
+ */
+
 #include <cstdio>
 #include <cwctype>
 #include <algorithm>

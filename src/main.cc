@@ -1,3 +1,7 @@
+/*
+ * The file was derived from src/main.cc in https://github.com/atom/node-spellchecker
+ */
+
 #include "spellcheckWrap.h"
 
 #define DECLARE_NAPI_METHOD(name, func)                          \

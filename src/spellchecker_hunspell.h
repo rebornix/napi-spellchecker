@@ -1,3 +1,8 @@
+/*
+ * The file was derived from src/spellchecker_hunspell.h in https://github.com/atom/node-spellchecker
+ */
+
+
 #ifndef SRC_SPELLCHECKER_HUNSPELL_H_
 #define SRC_SPELLCHECKER_HUNSPELL_H_
 

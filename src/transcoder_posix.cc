@@ -1,3 +1,7 @@
+/*
+ * The file was derived from src/transcoder_posix.cc in https://github.com/atom/node-spellchecker
+ */
+
 #include <iconv.h>
 #include <stdint.h>
 #include <stdlib.h>

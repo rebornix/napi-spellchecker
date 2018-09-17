@@ -1,3 +1,7 @@
+/*
+ * The file was derived from src/spellcheckWrap.cc in https://github.com/atom/node-spellchecker
+ */
+
 #ifndef TEST_ADDONS_NAPI_6_OBJECT_WRAP_Spellchecker_H_
 #define TEST_ADDONS_NAPI_6_OBJECT_WRAP_Spellchecker_H_
 

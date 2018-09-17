@@ -1,3 +1,7 @@
+/*
+ * The file was derived from src/spellcheckWrap.cc in https://github.com/atom/node-spellchecker
+ */
+
 #include "spellcheckWrap.h"
 #include <assert.h>
 

@@ -1,3 +1,7 @@
+/*
+ * The file was derived from src/spellchecker_win.cc in https://github.com/atom/node-spellchecker
+ */
+
 #define _WINSOCKAPI_
 
 #include <spellcheck.h>

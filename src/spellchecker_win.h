@@ -1,3 +1,7 @@
+/*
+ * The file was derived from src/spellchecker_win.h in https://github.com/atom/node-spellchecker
+ */
+
 #ifndef SRC_SPELLCHECKER_WIN_H_
 #define SRC_SPELLCHECKER_WIN_H_
 

@@ -1,3 +1,7 @@
+/*
+ * The file was derived from src/transcoder_win.h in https://github.com/atom/node-spellchecker
+ */
+
 #include <windows.h>
 #include <stdlib.h>
 #include "transcoder.h"
