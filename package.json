@@ -1,6 +1,6 @@
 {
   "name": "napi-spellchecker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Spell Checker built against ABI-stable Node.js API",
   "main": "./lib/spellchecker.js",
   "gypfile": true,
