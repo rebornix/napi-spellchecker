@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "Spell Checker built against ABI-stable Node.js API",
   "main": "./lib/spellchecker.js",
-  "private": true,
   "gypfile": true,
   "dependencies": {
     "bindings": "~1.5.0"
