@@ -24,6 +24,8 @@ branches:
   - master
   - /^v.*$/
 
+script: echo "npm test temporarily disabled"
+
 deploy:
   provider: script
   script: npm run prebuild && npm run prebuild:upload -u ${PREBUILD_UPLOAD}
