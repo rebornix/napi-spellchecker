@@ -1,6 +1,4 @@
-/*
- * The file was derived from spec/spellchecker-spec.coffee in https://github.com/atom/node-spellchecker
- */
+# The file was derived from spec/spellchecker-spec.coffee in https://github.com/atom/node-spellchecker
 
 {Spellchecker} = require '../lib/spellchecker'
 path = require 'path'
