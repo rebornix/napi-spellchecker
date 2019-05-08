@@ -1,4 +1,7 @@
 {
+  "defines": [
+    "NAPI_VERSION=<3",
+  ],
   'variables': {
     'conditions': [
       ['OS=="mac"', {

@@ -7,6 +7,12 @@
   "dependencies": {
     "bindings": "~1.5.0"
   },
+  "binary": {
+    "napi_versions": [
+      2,
+      3
+    ]
+  },
   "devDependencies": {
     "prebuild": "^7.6.0",
     "jasmine-node": "^1.16.2"
