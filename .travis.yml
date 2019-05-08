@@ -1,0 +1,33 @@
+language: node_js
+
+node_js:
+- 10
+
+matrix:
+  include:
+  - os: osx
+  - os: linux
+    compiler: gcc
+    env:
+      - CXX="g++-4.9"
+      - CC="gcc-4.9"
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - gcc-4.9
+        - g++-4.9
+
+branches:
+  only:
+  - master
+  - /^v.*$/
+
+deploy:
+  provider: script
+  script: npm run prebuild && npm run prebuild:upload -u ${PREBUILD_UPLOAD}
+  skip_cleanup: true
+  on:
+    all_branches: true
+    tags: true
