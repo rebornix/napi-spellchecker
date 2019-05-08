@@ -23,6 +23,7 @@
   },
   "scripts": {
     "prebuild": "prebuild -t 3 -r napi",
-    "prebuild:upload": "prebuild --upload-all"
+    "prebuild:upload": "prebuild --upload-all",
+    "install": "prebuild-install || node-gyp rebuild"
   }
 }
