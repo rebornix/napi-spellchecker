@@ -18,7 +18,6 @@
     "jasmine-node": "^1.16.2"
   },
   "scripts": {
-    "test": "node --napi-modules node_modules/jasmine-node/lib/jasmine-node/cli.js --coffee spec",
     "prebuild": "prebuild -t 3 -r napi",
     "prebuild:upload": "prebuild --upload-all"
   }
