@@ -8,9 +8,12 @@
     "bindings": "~1.5.0"
   },
   "devDependencies": {
+    "prebuild": "^7.6.0",
     "jasmine-node": "^1.16.2"
   },
   "scripts": {
-    "test": "node --napi-modules node_modules/jasmine-node/lib/jasmine-node/cli.js --coffee spec"
+    "test": "node --napi-modules node_modules/jasmine-node/lib/jasmine-node/cli.js --coffee spec",
+    "prebuild": "prebuild -t 3 -r napi",
+    "prebuild:upload": "prebuild --upload-all"
   }
 }
