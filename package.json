@@ -19,12 +19,12 @@
   },
   "devDependencies": {
     "prebuild": "^8.2.1",
-    "jasmine-node": "^1.16.2",
+    "jasmine-focused": "1.x",
     "tar": ">=4.4.2"
   },
   "scripts": {
     "prebuild": "prebuild -t 3 -r napi",
     "prebuild:upload": "prebuild --upload-all",
-    "test": "node --napi-modules node_modules/jasmine-node/lib/jasmine-node/cli.js --coffee spec"
+    "test": "jasmine-focused --captureExceptions --coffee spec/"
   }
 }
