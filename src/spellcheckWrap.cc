@@ -58,7 +58,8 @@ std::string Spellchecker::ParseWord(napi_env env, napi_value str)
         napi_throw_error(env, nullptr, "Bad argument");
         return nullptr;
     }
-    char* buf = new char[strLength];
+
+    char *buf = (char *)malloc(sizeof(char) * (strLength + 1));
     size_t result;
     status = napi_get_value_string_utf8(env, str, buf, strLength + 1, &result);
     if (status != napi_ok) {
@@ -250,7 +251,7 @@ napi_value Spellchecker::CheckSpelling(napi_env env, napi_callback_info info)
         return nullptr;
     }
 
-    char16_t* buf = new char16_t[strLength];
+    char16_t *buf = (char16_t *)malloc(sizeof(char16_t) * (strLength + 1));
     size_t result;
     status = napi_get_value_string_utf16(env, args[0], buf, strLength + 1, &result);
     if (status != napi_ok) {

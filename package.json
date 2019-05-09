@@ -23,6 +23,7 @@
   },
   "scripts": {
     "prebuild": "prebuild -t 3 -r napi",
-    "prebuild:upload": "prebuild --upload-all"
+    "prebuild:upload": "prebuild --upload-all",
+    "test": "node --napi-modules node_modules/jasmine-node/lib/jasmine-node/cli.js --coffee spec"
   }
 }
