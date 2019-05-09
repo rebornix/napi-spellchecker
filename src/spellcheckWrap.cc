@@ -52,23 +52,24 @@ std::string Spellchecker::ParseWord(napi_env env, napi_value str)
 {
     napi_status status;
 
-    size_t strLength = 1;
+    size_t strLength;
     status = napi_get_value_string_utf8(env, str, NULL, 0, &strLength);
     if (status != napi_ok) {
         napi_throw_error(env, nullptr, "Bad argument");
         return nullptr;
     }
 
-    char *buf = (char *)malloc(sizeof(char) * (strLength + 1));
-    size_t result;
-    status = napi_get_value_string_utf8(env, str, buf, strLength + 1, &result);
+    std::string buf;
+    buf.reserve(strLength + 1);
+    buf.resize(strLength);
+
+    status = napi_get_value_string_utf8(env, str, &buf[0], buf.capacity(), nullptr);
     if (status != napi_ok) {
         napi_throw_error(env, nullptr, "Bad argument");
         return nullptr;
     }
 
-    std::string word(buf);
-    return word;
+    return buf;
 }
 
 Spellchecker *Spellchecker::Unwrap(napi_env env, napi_callback_info info)
@@ -244,7 +245,7 @@ napi_value Spellchecker::CheckSpelling(napi_env env, napi_callback_info info)
         return nullptr;
     }
 
-    size_t strLength = 1;
+    size_t strLength;
     status = napi_get_value_string_utf16(env, args[0], NULL, 0, &strLength);
     if (status != napi_ok || argc < 1) {
         napi_throw_error(env, nullptr, "Bad argument");
