@@ -245,15 +245,24 @@ napi_value Spellchecker::CheckSpelling(napi_env env, napi_callback_info info)
     }
 
     size_t strLength = 1;
-    status = napi_get_value_string_utf8(env, args[0], NULL, 0, &strLength);
+    status = napi_get_value_string_utf16(env, args[0], NULL, 0, &strLength);
     if (status != napi_ok || argc < 1) {
         napi_throw_error(env, nullptr, "Bad argument");
         return nullptr;
     }
 
-    char16_t *buf = (char16_t *)malloc(sizeof(char16_t) * (strLength + 1));
+    if (strLength == 0) {
+        napi_value arr;
+        status = napi_create_array(env, &arr);
+        return arr;
+    }
+
+    std::u16string value;
+    value.reserve(strLength + 1);
+    value.resize(strLength);
+
     size_t result;
-    status = napi_get_value_string_utf16(env, args[0], buf, strLength + 1, &result);
+    status = napi_get_value_string_utf16(env, args[0], &value[0], value.capacity(), &result);
     if (status != napi_ok) {
         napi_throw_error(env, nullptr, "Bad argument");
         return nullptr;
@@ -261,7 +270,7 @@ napi_value Spellchecker::CheckSpelling(napi_env env, napi_callback_info info)
 
     Spellchecker *obj = Spellchecker::Unwrap(env, info);
 
-    std::vector<MisspelledRange> misspelled_ranges = obj->spellcheckerImpl_->CheckSpelling(reinterpret_cast<const uint16_t*>(buf), strLength);
+    std::vector<MisspelledRange> misspelled_ranges = obj->spellcheckerImpl_->CheckSpelling(reinterpret_cast<const uint16_t*>(&value[0]), value.capacity());
     napi_value arr;
     status = napi_create_array(env, &arr);
 
